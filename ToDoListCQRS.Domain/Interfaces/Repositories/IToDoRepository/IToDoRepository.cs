@@ -9,4 +9,6 @@ public interface IToDoRepository
         int pageNumber,
         int pageSize,
         CancellationToken cst = default);
+    Task UpdateAsync(ToDoItem item, CancellationToken cst = default);
+    Task<ToDoItem?> GetByIdAsync(Guid Id, CancellationToken cst = default);
 }

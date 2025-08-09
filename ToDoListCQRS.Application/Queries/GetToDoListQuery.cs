@@ -6,7 +6,8 @@ using ToDoListCQRS.Domain.Interfaces.Repositories.IToDoRepository;
 
 namespace ToDoListCQRS.Application.Queries;
 
-public record GetToDoListQuery(int PageNumber, int PageSize) :IRequest<PagedResponse<ToDoItemDto>>;
+public record GetToDoListQuery(int PageNumber = 1, int PageSize = 10) 
+    : IRequest<PagedResponse<ToDoItemDto>>;
 
 
 public class GetToDoListQueryHandler : IRequestHandler<GetToDoListQuery, PagedResponse<ToDoItemDto>>

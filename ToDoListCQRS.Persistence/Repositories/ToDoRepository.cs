@@ -26,6 +26,13 @@ public class ToDoRepository : IToDoRepository
         await _context.SaveChangesAsync(cst);
     }
 
+    public async Task<ToDoItem?> GetByIdAsync(Guid Id, CancellationToken cst = default)
+    {
+        var itemEntity = await _context.ToDoItems.AsNoTracking()
+                                .FirstOrDefaultAsync(i => i.Id == Id,cst);
+        return _mapper.Map<ToDoItem>(itemEntity);
+    }
+
     public async Task<PagedResponse<ToDoItem>> GetListAsync(int pageNumber, 
                                                             int pageSize, 
                                                             CancellationToken cst = default)
@@ -38,5 +45,12 @@ public class ToDoRepository : IToDoRepository
 
         var items = _mapper.Map<IReadOnlyList<ToDoItem>>(itemEntities);
         return new PagedResponse<ToDoItem>(items, totalRecords, pageNumber, pageSize);
+    }
+
+    public async Task UpdateAsync(ToDoItem item, CancellationToken cst = default)
+    {
+        var newItemEntity = _mapper.Map<ToDoItemEntity>(item);
+        _context.ToDoItems.Update(newItemEntity);
+        await _context.SaveChangesAsync(cst);
     }
 }

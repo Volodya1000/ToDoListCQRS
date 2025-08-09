@@ -32,4 +32,13 @@ public class ToDoListController:ControllerBase
 
         return Ok(rez);
     }
+
+    [HttpPut]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> Update([FromBody]UpdateToDoCommand command, CancellationToken cst)
+    {
+        await _mediator.Send(command, cst);
+
+        return NoContent();
+    }
 }

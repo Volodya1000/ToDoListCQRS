@@ -27,4 +27,14 @@ public class ToDoItem
     {
         return new ToDoItem(title);
     }
+
+    public void UpdateTitle(string newTitle)
+    {
+        Title=newTitle;
+    }
+
+    public void UpdateContent(string newContent) 
+    { 
+        Content=newContent;
+    }
 }
