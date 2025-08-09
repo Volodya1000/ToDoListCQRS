@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using ToDoListCQRS.Domain.Entities;
 using ToDoListCQRS.Domain.Interfaces.Repositories.IToDoRepository;
 using ToDoListCQRS.Persistence.Entities;
@@ -23,6 +22,13 @@ public class ToDoRepository : IToDoRepository
     {
         var itemEntity = _mapper.Map<ToDoItemEntity>(item);
         await _context.ToDoItems.AddAsync(itemEntity, cst);
+        await _context.SaveChangesAsync(cst);
+    }
+
+    public async Task DeleteAsync(ToDoItem item, CancellationToken cst = default)
+    {
+        var itemEntity = _mapper.Map<ToDoItemEntity>(item);
+        _context.ToDoItems.Remove(itemEntity);
         await _context.SaveChangesAsync(cst);
     }
 
@@ -49,8 +55,8 @@ public class ToDoRepository : IToDoRepository
 
     public async Task UpdateAsync(ToDoItem item, CancellationToken cst = default)
     {
-        var newItemEntity = _mapper.Map<ToDoItemEntity>(item);
-        _context.ToDoItems.Update(newItemEntity);
+        var itemEntity = _mapper.Map<ToDoItemEntity>(item);
+        _context.ToDoItems.Update(itemEntity);
         await _context.SaveChangesAsync(cst);
     }
 }

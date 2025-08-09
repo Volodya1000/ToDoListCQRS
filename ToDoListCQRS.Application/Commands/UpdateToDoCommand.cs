@@ -18,7 +18,7 @@ public class UpdateToDoCommandHandler : IRequestHandler<UpdateToDoCommand, Unit>
     public async Task<Unit> Handle(UpdateToDoCommand request, CancellationToken cst = default)
     {
         var toDoItem = await _toDoRepository.GetByIdAsync(request.Id,cst)
-            ?? throw new Exception();
+            ??   throw new KeyNotFoundException($"ToDo item with Id {request.Id} not found"); 
 
         toDoItem.UpdateTitle(request.Title);
         toDoItem.UpdateContent(request.Content);

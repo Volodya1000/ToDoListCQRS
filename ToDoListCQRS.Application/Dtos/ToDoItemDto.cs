@@ -1,3 +1,3 @@
 ﻿namespace ToDoListCQRS.Application.Dtos;
 
-public record ToDoItemDto(Guid Id, string Title, string Content);
+public record ToDoItemDto(Guid Id, string Title, string Content,bool IsDone);

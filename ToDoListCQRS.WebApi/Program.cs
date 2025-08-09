@@ -1,19 +1,21 @@
+using ToDoListCQRS.Persistence;
 using ToDoListCQRS.WebApi.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
 builder.Services.AddControllers();
+builder.Services.AddSwaggerGen();
 builder.Services.AddOpenApi();
 
 builder.Services.ConfigureSevices();
 builder.Services.AddDatabaseConfiguration(builder.Configuration);
 
-
-builder.Services.AddSwaggerGen();
-
 var app = builder.Build();
-
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    db.Database.EnsureCreated();
+}
 
 if (app.Environment.IsDevelopment())
 {

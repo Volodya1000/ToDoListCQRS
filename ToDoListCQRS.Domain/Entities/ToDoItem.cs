@@ -1,40 +1,46 @@
-﻿namespace ToDoListCQRS.Domain.Entities;
+﻿using ToDoListCQRS.Domain.ValueObjects;
+
+namespace ToDoListCQRS.Domain.Entities;
 
 public class ToDoItem
 {
-    public Guid Id { get;}
+    public Guid Id { get; }
 
-    public string Title { get; private set; }
+    public TitleValueObject Title { get; private set; }
 
     public string Content { get; private set; } = "";
 
-    // Конструктор для создания нового объекта с новым Id
-    private ToDoItem(string title)
-    {
-        Id = Guid.NewGuid();
-        Title = title;
-    }
+    public bool IsDone { get; private set; }
 
-    // Конструктор для восстановления из хранилища с заданным Id
-    public ToDoItem(Guid id, string title, string content)
+    private ToDoItem(Guid id, TitleValueObject title)
     {
         Id = id;
         Title = title;
-        Content = content;
+        IsDone = false;
     }
 
-    public static ToDoItem Create(string title)
+    public static ToDoItem Create(Guid id, TitleValueObject title)
     {
-        return new ToDoItem(title);
+        return new ToDoItem(id, title);
     }
 
-    public void UpdateTitle(string newTitle)
+    public void UpdateTitle(TitleValueObject newTitle)
     {
-        Title=newTitle;
+        Title = newTitle;
     }
 
-    public void UpdateContent(string newContent) 
-    { 
-        Content=newContent;
+    public void UpdateContent(string newContent)
+    {
+        Content = newContent;
+    }
+
+    public void MarkAsDone()
+    {
+        IsDone = true;
+    }
+
+    public void MarkAsNotDone()
+    {
+        IsDone = false;
     }
 }

@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using ToDoListCQRS.Domain.Entities;
 using ToDoListCQRS.Domain.Interfaces.Repositories.IToDoRepository;
+using ToDoListCQRS.Domain.ValueObjects;
 
 namespace ToDoListCQRS.Application.Comands;
 
@@ -17,7 +18,7 @@ public class CreateToDoCommandHandler : IRequestHandler<CreateToDoCommand, Guid>
 
     public async Task<Guid> Handle(CreateToDoCommand request, CancellationToken cst)
     {
-        var toDoItem = ToDoItem.Create(request.Title);
+        var toDoItem = ToDoItem.Create(Guid.NewGuid(), new TitleValueObject(request.Title));
 
         await _toDoRepository.AddAcync(toDoItem,cst);
 

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using ToDoListCQRS.Domain.Entities;
+using ToDoListCQRS.Domain.ValueObjects;
 using ToDoListCQRS.Persistence.Entities;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ToDoListCQRS.Persistence.Mapping;
 
@@ -9,9 +9,15 @@ public class ToDoItemProfile : Profile
 {
     public ToDoItemProfile()
     {
-        CreateMap<ToDoItem, ToDoItemEntity>();
-
         CreateMap<ToDoItemEntity, ToDoItem>()
-            .ConstructUsing(src => new ToDoItem(src.Id, src.Title, src.Content));
+           .ConstructUsing(src => ToDoItem.Create(src.Id, new TitleValueObject(src.Title)))
+           .AfterMap((src, dest) =>
+           {
+               dest.UpdateContent(src.Content);
+               if (src.IsDone)
+                   dest.MarkAsDone();
+           });
+
+        CreateMap<ToDoItem, ToDoItemEntity>();
     }
 }
