@@ -2,7 +2,7 @@
 
 namespace ToDoListCQRS.Domain.ValueObjects;
 
-public abstract record StringValueObject
+public abstract class StringValueObject
 {
     public string Value { get; }
 

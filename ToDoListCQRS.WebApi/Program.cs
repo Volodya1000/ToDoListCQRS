@@ -1,5 +1,6 @@
 using ToDoListCQRS.Persistence;
 using ToDoListCQRS.WebApi.Extensions;
+using ToDoListCQRS.WebApi.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +26,8 @@ if (app.Environment.IsDevelopment())
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
     });
 }
+
+app.UseMiddleware<CustomExceptionHandlerMiddleware>();
 
 app.UseHttpsRedirection();
 

@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using MediatR.Pipeline;
 using ToDoListCQRS.Domain.Interfaces.Repositories.IToDoRepository;
+using ToDoListCQRS.Domain.ValueObjects;
 
 namespace ToDoListCQRS.Application.Comands;
 
@@ -20,7 +21,7 @@ public class UpdateToDoCommandHandler : IRequestHandler<UpdateToDoCommand, Unit>
         var toDoItem = await _toDoRepository.GetByIdAsync(request.Id,cst)
             ??   throw new KeyNotFoundException($"ToDo item with Id {request.Id} not found"); 
 
-        toDoItem.UpdateTitle(request.Title);
+        toDoItem.UpdateTitle(new TitleValueObject(request.Title));
         toDoItem.UpdateContent(request.Content);
 
         await _toDoRepository.UpdateAsync(toDoItem,cst);
